@@ -45,8 +45,8 @@ button, a {
     position: absolute; 
     top: -100px; 
     left: 50%; 
-    transform: translateX(-50%); /* Centrado horizontal perfecto */
-    font-size: 24px; /* Un poco más pequeño para que encaje mejor */
+    transform: translateX(-50%); 
+    font-size: 24px; 
     white-space: nowrap;
     z-index: 20; 
 }
@@ -82,8 +82,7 @@ button, a {
     pointer-events: none;
 }
 
-/* --- MODIFICACIÓN AQUÍ --- */
-/* Creamos un contenedor para el corazón que controle su posición en pantalla */
+
 #heart-container {
     position: fixed;
     left: 50%;
@@ -95,7 +94,7 @@ button, a {
 #heart {
     font-size: 110px;
     cursor: pointer;
-    user-select: none; /* Evita que se seleccione el texto al hacer click rápido */
+    user-select: none; 
 }
 
 .glow { filter: drop-shadow(0 0 15px #ff4f7b) drop-shadow(0 0 40px #ff4f7b); }
@@ -188,7 +187,7 @@ const secuencia=[
  {tipo:"texto",contenido:"Una cara bonita"},
  {tipo:"texto",contenido:"con un cráneo roto."},
  {tipo:"imagen",contenido:"skull.gif"},
- {tipo:"texto",contenido:"No quiero que la vida de mis padres"},
+ {tipo:"texto",contenido:"No quiero que la vida de mis madre"},
  {tipo:"texto",contenido:"se atragante en una búsqueda sin fin."},
  {tipo:"imagen",contenido:"blood-pressure-gmoney.gif"},
 ];
