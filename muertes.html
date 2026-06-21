@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>Aviso de muerte</title>
+<style>
+/* Fondo degradado principal de la página */
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #006666, #660066);
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CAPA DEL GIF: Se muestra por encima de todo pero es invisible a los clics */
+.gif-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('flowers-wilt.gif'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.35; /* Ajusta la transparencia para no tapar el texto (0.1 al 1) */
+    z-index: 10; /* Va por encima de todo */
+    pointer-events: none; /* HACE QUE EL GIF SEA "FANTASMA": los clics lo atraviesan y van al botón */
+}
+
+/* Estilos para tu bloque de texto (queda en una capa inferior) */
+#intro {
+    text-align: center;
+    max-width: 600px;
+    padding: 20px;
+    z-index: 1; 
+}
+
+h1 {
+    font-size: 72px;
+    margin: 0 0 20px 0;
+}
+
+p {
+    font-size: 24px;
+    line-height: 1.4;
+    margin-bottom: 40px;
+}
+
+
+#start {
+    font-size: 34px;
+    padding: 15px 40px;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+#start:hover {
+    background-color: #990000;
+    color: white;
+}
+</style>
+</head>
+<body>
+
+
+<div class="gif-overlay"></div>
+
+
+<div id="intro">
+    <p>Una persona está muriendo. Presiona su corazón cuando brille para mantenerla con vida.</p>
+    <p>Este poema alterna palabras con imágenes. Como la vida.</p>
+        <a href="cosa.html"> 
+        <button id="start">comenzar</button>
+</div>
+
+</body>
+</html>

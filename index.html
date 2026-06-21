@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>Menu</title>
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #990000, #000000);
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+
+.gif-fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('thefomo.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5; /* Ajusta este valor (0.1 a 1) para controlar qué tan transparente se ve el GIF */
+    pointer-events: none; /* Permite hacer clic en los botones a través del GIF */
+    z-index: 1; /* Se coloca justo encima del fondo */
+}
+
+
+.panel {
+    position: absolute;
+    left: 8%;
+    top: 18%;
+    transform: rotate(-6deg);
+    border-left: 10px solid white;
+    padding: 30px;
+    z-index: 2; 
+}
+
+h1 {
+    font-size: 72px;
+    line-height: .9;
+    margin: 0;
+}
+
+button {
+    margin-top: 30px;
+    font-size: 34px;
+    padding: 15px 40px;
+}
+</style>
+</head>
+<body>
+
+
+<div class="gif-fondo"></div>
+
+<div class='panel'>
+    <h1>Aviso<br>de muerte</h1>
+    <a href="muertes.html">
+        <button>Iniciar</button>
+    </a>
+</div>
+
+</body>
+</html>

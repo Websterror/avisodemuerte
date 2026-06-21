@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aviso de muerte</title>
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #4a0000, #000000, #1a0000);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #fff;
+    font-family: "Courier New", Courier, monospace; 
+    overflow: hidden;
+    height: 100vh;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+#retry, #victoria {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+#retry, #victoria { display: none; }
+
+button, a { 
+    padding: 12px 24px; 
+    font-size: 20px; 
+    font-family: "Courier New", Courier, monospace; 
+}
+
+
+#vidas { 
+    position: absolute; 
+    top: -100px; 
+    left: 50%; 
+    transform: translateX(-50%); /* Centrado horizontal perfecto */
+    font-size: 24px; /* Un poco más pequeño para que encaje mejor */
+    white-space: nowrap;
+    z-index: 20; 
+}
+
+#contenido {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.texto {
+    font-size: 38px;
+    padding: 20px;
+    text-shadow: 0 0 10px rgba(0,0,0,0.8);
+    max-width: 80%;
+}
+
+.imagen {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    opacity: 0.25;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* --- MODIFICACIÓN AQUÍ --- */
+/* Creamos un contenedor para el corazón que controle su posición en pantalla */
+#heart-container {
+    position: fixed;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    z-index: 10; 
+}
+
+#heart {
+    font-size: 110px;
+    cursor: pointer;
+    user-select: none; /* Evita que se seleccione el texto al hacer click rápido */
+}
+
+.glow { filter: drop-shadow(0 0 15px #ff4f7b) drop-shadow(0 0 40px #ff4f7b); }
+
+.letter { 
+    position: absolute; 
+    color: #ff9dbc; 
+    pointer-events: none; 
+    animation: fade 2.5s linear forwards; 
+    font-family: "Courier New", Courier, monospace; 
+}
+
+@keyframes fade { to { opacity: 0; transform: scale(2.5); } }
+#muerte { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.95); z-index: 500; }
+
+.human { 
+    position: absolute; 
+    color: #fff; 
+    font-family: "Courier New", Courier, monospace; }
+
+.scatter { animation: scatter 4s linear forwards; }
+@keyframes scatter { to { opacity: 0; transform: translate(var(--dx),var(--dy)) rotate(var(--rot)); } }
+</style>
+</head>
+<body>
+
+<div id="heart-container">
+    <div id="vidas"></div>
+    <div id="heart">❤</div>
+</div>
+
+<div id="contenido"></div>
+<div id="muerte"></div>
+
+<div id="victoria">
+<h1>Fin</h1>
+<p> La persona murió. El poema sobrevivió <p/>
+<a href="#" onclick="location.reload()">reiniciar</a>
+</div>
+
+<div id="retry">
+<p> La memoria se perdió </p>
+<a href="#" onclick="location.reload()">volver a intentarlo</a>
+</div>
+
+<script>
+const secuencia=[
+ {tipo:"texto",contenido:"No, yo no me morí,"},
+ {tipo:"texto",contenido:"no,"},
+ {tipo:"texto",contenido:"me asesinaron."},
+ {tipo:"imagen",contenido:"flowers-water.gif"},
+ {tipo:"texto",contenido:"Una piedra o un disparo"},
+ {tipo:"texto",contenido:"no lo sé."},
+ {tipo:"imagen",contenido:"smileyblue-blue.gif"},
+ {tipo:"texto",contenido:"Un trueno me arrancó el aliento;"},
+ {tipo:"texto",contenido:"tus ojos;"},
+ {tipo:"texto",contenido:"el día que me mostraste"},
+ {tipo:"texto",contenido:"con qué sueñan los insectos;"},
+ {tipo:"imagen",contenido:"bichos.gif"},
+ {tipo:"texto",contenido:"y el final de la serie"},
+ {tipo:"texto",contenido:"que nunca veré,"},
+ {tipo:"texto",contenido:"que NUNCA veré,"},
+ {tipo:"texto",contenido:"QUE NUNCA VERÉ."},
+ {tipo:"imagen",contenido:"sleepy-tired.gif"},
+ {tipo:"texto",contenido:"Caí de rodillas"},
+ {tipo:"texto",contenido:"aunque no tenía motivos"},
+ {tipo:"texto",contenido:"para pedir clemencia."},
+ {tipo:"texto",contenido:"De rodillas recé."},
+ {tipo:"texto",contenido:"Nunca aprendí a rezar."},
+ {tipo:"texto",contenido:"El asfalto ensució mi sangre."},
+ {tipo:"imagen",contenido:"glitch-horror.gif"},
+ {tipo:"texto",contenido:"¿Por qué?"},
+ {tipo:"texto",contenido:"No hay tiempo para preguntas."},
+ {tipo:"texto",contenido:"Nunca hubo tiempo para respuestas"},
+ {tipo:"texto",contenido:"que de verdad necesitaba."},
+ {tipo:"texto",contenido:"Una carpeta de investigación"},
+ {tipo:"texto",contenido:"con miles de letras"},
+ {tipo:"texto",contenido:"y ninguna canción."},
+ {tipo:"imagen",contenido:"forest-dark.gif"},
+ {tipo:"texto",contenido:"¿Cómo nos van a encontrar"},
+ {tipo:"texto",contenido:"sin una brújula que apunte"},
+ {tipo:"texto",contenido:"a donde todos deberíamos estar mirando?"},
+ {tipo:"imagen",contenido:"eyes-moving.gif"},
+ {tipo:"texto",contenido:"Mi foto será el trauma"},
+ {tipo:"texto",contenido:"que les dé alivio"},
+ {tipo:"texto",contenido:"de saber que mi s(m)uerte"},
+ {tipo:"texto",contenido:"no fue la suya."},
+ {tipo:"texto",contenido:"Los ríos de sangre"},
+ {tipo:"texto",contenido:"se desbordaron sobre mi cara."},
+ {tipo:"texto",contenido:"Una cara bonita"},
+ {tipo:"texto",contenido:"con un cráneo roto."},
+ {tipo:"imagen",contenido:"skull.gif"},
+ {tipo:"texto",contenido:"No quiero que la vida de mi madre"},
+ {tipo:"texto",contenido:"se atragante en una búsqueda sin fin."},
+ {tipo:"imagen",contenido:"blood-pressure-gmoney.gif"},
+];
+
+let vidas=3,maxVidas=5,indice=0,vivo=true,esperando=false;
+const heart=document.getElementById("heart");
+const contenido=document.getElementById("contenido");
+
+function ui(){
+ document.getElementById("vidas").textContent="❤️".repeat(vidas)+"🖤".repeat(maxVidas-vidas);
+}
+
+function mostrar(){
+ let s=secuencia[indice];
+ contenido.innerHTML=s.tipo==="texto"
+ ? `<div class="texto">${s.contenido}</div>`
+ : `<img class="imagen" src="${s.contenido}">`;
+}
+
+function pulso(txt){
+ let r=heart.getBoundingClientRect();
+ let cx=r.left+r.width/2, cy=r.top+r.height/2;
+ for(let i=0;i<120;i++){
+  let t=Math.PI*2*i/120;
+  let x=16*Math.pow(Math.sin(t),3);
+  let y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+  let d=document.createElement("div");
+  d.className="letter";
+  d.textContent=txt[i%txt.length];
+  d.style.left=(cx+x*10)+"px";
+  d.style.top=(cy-y*10)+"px";
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(),2500);
+ }
+}
+
+function muerte(){
+ vivo=false;
+ const c=document.getElementById("muerte");
+ c.style.display="block";
+ const poema=secuencia.map(x=>x.contenido).join(" ");
+ const pts=[];
+
+ for(let y=-120;y<-80;y+=12)
+  for(let x=-20;x<=20;x+=12) pts.push([x,y]);
+ for(let y=-70;y<40;y+=12)
+  for(let x=-35;x<=35;x+=12) pts.push([x,y]);
+ for(let y=40;y<120;y+=12){
+  for(let x=-30;x<=-8;x+=12) pts.push([x,y]);
+  for(let x=8;x<=30;x+=12) pts.push([x,y]);
+ }
+
+ let i=0;
+ pts.forEach(p=>{
+  let d=document.createElement("div");
+  d.className="human";
+  d.textContent=poema[i++%poema.length];
+  d.style.left=(innerWidth/2+p[0])+"px";
+  d.style.top=(innerHeight/2+p[1])+"px";
+ c.appendChild(d);
+ });
+
+ setTimeout(()=>{
+  document.querySelectorAll(".human").forEach(el=>{
+   el.classList.add("scatter");
+   el.style.setProperty("--dx",(Math.random()*1200-600)+"px");
+   el.style.setProperty("--dy",(Math.random()*1200-600)+"px");
+   el.style.setProperty("--rot",(Math.random()*720-360)+"deg");
+  });
+  setTimeout(()=>document.getElementById("retry").style.display="flex",4000);
+ },3000);
+}
+
+function perder(){
+ vidas--;
+ ui();
+ if(vidas<=0) muerte();
+}
+
+function beat(){
+ if(!vivo) return;
+ heart.classList.add("glow");
+ pulso(secuencia[indice].contenido || "❤");
+ esperando=true;
+ setTimeout(()=>{
+  if(esperando){
+   esperando=false;
+   heart.classList.remove("glow");
+   perder();
+  }
+ },650);
+}
+
+heart.onclick=()=>{
+ if(!vivo) return;
+ if(esperando){
+  esperando=false;
+  heart.classList.remove("glow");
+  vidas=Math.min(maxVidas,vidas+1);
+  ui();
+  indice++;
+  if(indice>=secuencia.length){
+   vivo=false;
+   document.getElementById("victoria").style.display="flex";
+   return;
+  }
+  mostrar();
+ }else perder();
+};
+
+function loop(){
+ if(!vivo) return;
+ beat();
+ setTimeout(loop,1200+Math.random()*2200);
+}
+
+window.onload=()=>{
+ ui();
+ mostrar();
+ setTimeout(loop, 2000);
+};
+</script>
+</body>
+</html>
